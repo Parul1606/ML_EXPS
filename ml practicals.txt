@@ -1,0 +1,410 @@
+### PYTHON MODULES
+
+#NUMPY
+
+import numpy as np
+rank 2 x = np.array([[1, 2],[3, 4]])
+y = np.array([[5, 6], [7, 8]])
+v = np.array([9, 10])
+w = np.array([11, 12])
+print(np.dot(v,w), "\n")
+product print(np.dot(x,v), "\n")
+product print(np.dot(x,y))
+
+#SCIPY
+
+from scipy
+import io import
+numpy as np
+arr = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9,])
+io.savemat('arr.mat', {"vec": arr})
+mydata =
+io.loadmat('arr.mat')
+print(mydata)
+
+
+#TENSORFLOW
+
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<body>
+<h1>TensorFlow JavaScript</h1>
+<h3>Get the data behind a tensor:</h3>
+<div id="demo"></div>
+<script>
+const myArr = [[1, 2], [3,4]]; 
+const tensorA = tf.tensor(myArr);
+tensorA.data().then(data => display(data));
+function display(data) {
+  document.getElementById("demo").innerHTML = data;
+}
+</script>
+</body>
+</html>
+
+
+#PANDAS
+
+import pandas as pd
+data = {"country": ["Brazil", "Russia", "India", "China", "South Africa"],
+        "capital": ["Brasilia", "Moscow", "New Delhi", "Beijing", "Pretoria"],
+        "area": [8.516, 17.10, 3.286, 9.597, 1.221],
+        "population": [200.4, 143.5, 1252, 1357, 52.98] }
+
+data_table = pd.DataFrame(data)
+print(data_table)
+
+
+#MATPLOTLIB
+
+import matplotlib.pyplot as
+plt import numpy as np
+x = np.linspace(0, 10, 100)
+plt.plot(x, x, label ='linear')
+plt.legend()
+plt.show()
+
+## Linear Regression
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+Housing = pd.read_csv(r'C:\Users\Parul Pandey\Dropbox\PC\Downloads\USA_Housing.csv')
+
+Housing.head()
+
+Housing.info()
+
+Housing.describe()
+
+Housing.columns
+
+sns.pairplot(Housing)
+
+sns.displot(Housing['Price']
+
+sns.heatmap(Housing.corr(), annot=True)
+
+X = Housing[['Avg. Area Income', 'Avg. Area House Age', 'Avg. Area Number of Rooms',
+       'Avg. Area Number of Bedrooms', 'Area Population']]
+y = Housing['Price']
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=101)
+
+from sklearn.linear_model import LinearRegression
+
+lm = LinearRegression()
+
+lm.fit(X_train, y_train)
+
+print(lm.intercept_)
+
+coeff_df = pd.DataFrame(lm.coef_,X.columns, columns=['Coefficient'])
+coeff_df
+
+predictions = lm.predict(X_test)
+
+plt.scatter(y_test, predictions)
+
+sns.displot((y_test-predictions), bins=50)
+
+from sklearn import metrics
+
+print('MAE:', metrics.mean_absolute_error(y_test, predictions))
+print('MSE:', metrics.mean_squared_error(y_test, predictions))
+print('RMSE:', np.sqrt(metrics.mean_absolute_error(y_test, predictions)))
+
+### Logistic Regression
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from seaborn import load_dataset
+%matplotlib inline
+plt.style.use('ggplot')
+
+data = load_dataset("titanic")
+data
+
+data.info()
+
+columns = ['alive','alone','embark_town','who','adult_male','deck']
+
+data_2 = data.drop(columns, axis=1)
+
+data_2.describe(include='all').T
+
+print(f"Max value of age column : {data_2['age'].max()}")
+print(f"Min value of age column : {data_2['age'].min()}")
+
+bins= [0,5,17,25,50,80]
+labels=['Infant','Kid','Young','Adult','Old']
+data_2['age'] = pd.cut(data_2['age'], bins = bins, labels=labels)
+
+pd.DataFrame(data_2['age'].value_counts())
+
+data_2['age'].mode()[0]
+
+data_3 = data_2.fillna({'embarked' : 'S'})
+data_4 = data_2.fillna({'age': data_3['age'].mode()[0]})
+
+data_2['embarked'].unique()
+
+print(f"How many 'S' on embarked column: {data_2[data_2['embarked'] == 'S'].shape[0]}")
+print(f"How many 'C' on embarked column: {data_2[data_2['embarked'] == 'C'].shape[0]}")
+print(f"How many 'Q' on embarked column: {data_2[data_2['embarked'] == 'Q'].shape[0]}")
+
+data_3 = data_2.fillna({'embarked':'S'})
+data_4[['pclass','survived']].groupby(['pclass']).sum().sort_values(by='survived')
+
+data_4[['sex', 'survived']].groupby(['sex']).sum().sort_values(by='survived')
+
+bins=[-1, 7.3321,15.321,31,512.4322]
+labels = ['low','medium-low','medium','high']
+data_4['fare'] = pd.cut(data_4["fare"], bins = bins, labels=labels)
+
+data_5 = data_4.drop('class', axis=1)
+sns.distplot(data_5['survived'])
+
+plt.figure(figsize=(20,10))
+plt.subplot(321)
+sns.barplot(x='sibsp', y='survived', data = data_5)
+plt.subplot(322)
+sns.barplot(x='fare', y='survived', data = data_5)
+plt.subplot(323)
+sns.barplot(x='pclass', y='survived', data = data_5)
+plt.subplot(324)
+sns.barplot(x='age', y='survived', data = data_5)
+plt.subplot(325)
+sns.barplot(x='sex', y='survived', data = data_5)
+plt.subplot(326)
+sns.barplot(x='embarked', y='survived', data = data_5)
+
+dummies = ['fare','age', 'embarked', 'sex']
+dummy_data = pd.get_dummies(data_5[dummies])
+
+dummy_data.shape
+
+data_6 = pd.concat([data_5, dummy_data], axis=1)
+data_6.drop(dummies, axis=1, inplace=True)
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+X = data_6.drop('survived', axis=1)
+y = data_6['survived']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=101)
+
+log_reg = LogisticRegression()
+log_reg.fit(X_train, y_train)
+y_pred = log_reg.predict(X_test)
+y_pred
+
+accuracy_score(y_pred, y_test)
+confusion_matrix(y_pred, y_test)
+
+
+###HEBBIAN LEARNING
+def hebbian_learning(samples):
+     print(f'{"INPUT":^8} {"TARGET":^16}{"WEIGHT CHANGES":^15}{"WEIGHTS":^25}')
+     w1, w2, b = 0, 0, 0
+     print(' ' * 45, f'({w1:2}, {w2:2}, {b:2})')
+     for x1, x2, y in samples:
+         w1 = w1 + x1 * y
+         w2 = w2 + x2 * y
+         b = b + y
+         print(f'({x1:2}, {x2:2}) {y:2} ({x1y:2}, {x2y:2}, {y:2}) ({w1:2}, {w2:2}, {b:2})')
+AND_samples = {
+    'binary_input_binary_output': [
+        [1, 1, 1],
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0]
+    ],
+    'binary_input_bipolar_output': [
+        [1, 1, 1],
+        [1, 0, -1],
+        [0, 1, -1],
+        [0, 0, -1]
+    ],
+    'bipolar_input_bipolar_output': [
+        [ 1, 1, 1],
+        [ 1, -1, -1],
+        [-1, 1, -1],
+        [-1, -1, -1]
+    ]
+}
+OR_samples = {
+    'binary_input_binary_output': [
+        [1, 1, 1],
+        [1, 0, 1],
+        [0, 1, 1],
+        [0, 0, 0]
+    ],
+    'binary_input_bipolar_output': [
+        [1, 1, 1],
+        [1, 0, 1],
+        [0, 1, 1],
+        [0, 0, -1]
+    ],
+    'bipolar_input_bipolar_output': [
+        [ 1, 1, 1],
+        [ 1, -1, 1],
+        [-1, 1, 1],
+        [-1, -1, -1]
+    ]
+}
+XOR_samples = {
+    'binary_input_binary_output': [
+        [1, 1, 0],
+        [1, 0, 1],
+        [0, 1, 1],
+        [0, 0, 0]
+    ],
+    'binary_input_bipolar_output': [
+        [1, 1, -1],
+        [1, 0, 1],
+        [0, 1, 1],
+        [0, 0, -1]
+    ],
+    'bipolar_input_bipolar_output': [
+        [ 1, 1, -1],
+        [ 1, -1, 1],
+        [-1, 1, 1],
+        [-1, -1, -1]
+    ]
+}
+
+print('-'20, 'HEBBIAN LEARNING', '-'20)
+print('AND with Binary Input and Binary Output')
+hebbian_learning(AND_samples['binary_input_binary_output'])
+print('AND with Binary Input and Bipolar Output')
+hebbian_learning(AND_samples['binary_input_bipolar_output'])
+print('AND with Bipolar Input and Bipolar Output')
+hebbian_learning(AND_samples['bipolar_input_bipolar_output'])
+
+print('-'20, 'HEBBIAN LEARNING', '-'20)
+print('OR with binary input and binary output')
+hebbian_learning(OR_samples['binary_input_binary_output'])
+print('OR with binary input and bipolar output')
+hebbian_learning(OR_samples['binary_input_bipolar_output'])
+print('OR with bipolar input and bipolar output')
+hebbian_learning(OR_samples['bipolar_input_bipolar_output'])
+
+print('-'20, 'HEBBIAN LEARNING', '-'20)
+print('XOR with binary input and binary output')
+hebbian_learning(XOR_samples['binary_input_binary_output'])
+print('XOR with binary input and bipolar output')
+hebbian_learning(XOR_samples['binary_input_bipolar_output'])
+print('XOR with bipolar input and bipolar output')
+hebbian_learning(XOR_samples['bipolar_input_bipolar_output'])
+
+
+
+###Mcculloch Pitt Model
+
+from tabulate import tabulate
+x1 = [0, 0, 1, 1]
+x2 = [0, 1, 0, 1]
+w1 = [1, 1, 1, 1]
+w2 = [1, 1, 1, 1]
+t = 2
+
+print("x1 x2 w1 w2 t O")
+for i in range(len(x1)):
+ if ( x1[i]*w1[i] + x2[i]*w2[i] ) >= t:
+     print(x1[i],' ',x2[i],' ',w1[i],' ',w2[i],' ',t,' ', 1)
+ else:
+     print(x1[i],' ',x2[i],' ',w1[i],' ',w2[i],' ',t,' ', 0)
+
+x1 = [0, 0, 1, 1]
+x2 = [0, 1, 0, 1]
+w1 = [1, 1, 1, 1]
+w2 = [1, 1, 1, 1]
+t = 1
+#output
+print("x1 x2 w1 w2 t O")
+for i in range(len(x1)):
+ if ( x1[i]*w1[i] + x2[i]*w2[i] ) >= t:
+     print(x1[i],' ',x2[i],' ',w1[i],' ',w2[i],' ',t,' ', 1)
+ else:
+     print(x1[i],' ',x2[i],' ',w1[i],' ',w2[i],' ',t,' ', 0)
+
+x = [0, 1]
+w = [-1, -1]
+t = 0
+#output
+print("x w t O")
+for i in range(len(x)):
+ if ( x[i]*w[i]) >= t:
+     print(x[i],' ',w[i],' ',t,' ', 1)
+ else:
+     print(x[i],' ',w[i],' ',t,' ', 0)
+
+x1 = [0, 0, 1, 1]
+x2 = [0, 1, 0, 1]
+w1 = [-1, -1, -1, -1]
+w2 = [-1, -1, -1, -1]
+t = -2
+#output
+print("x1 x2 w1 w2 t O")
+for i in range(len(x1)):
+ if ( x1[i]*w1[i] + x2[i]*w2[i] ) > t:
+     print(x1[i],' ',x2[i],' ',w1[i],' ',w2[i],' ',t,' ', 1)
+ else:
+     print(x1[i],' ',x2[i],' ',w1[i],' ',w2[i],' ',t,' ', 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
